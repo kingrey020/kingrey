@@ -1,1 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Click</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
+    body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  background: radial-gradient(circle at top, #3a3a3a, #1c1c1c, #000000 90%);
+  height: 100vh;
+  overflow: hidden;
+  transition: background-color 2s ease, opacity 2s ease;
+}
+
+
+
+
+
+    h1 {
+      font-size: 1.5em;
+      color: #aeb6c2;
+      text-shadow: 0 0 12px rgba(180, 200, 230, 0.4);
+      margin-top: 140px;
+      letter-spacing: 1px;
+      animation: fadeText 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes fadeText {
+      0% { opacity: 0.9; transform: translateY(0); }
+      100% { opacity: 0.5; transform: translateY(-6px); }
+    }
+
+    button {
+      padding: 15px 45px;
+      font-size: 18px;
+      border-radius: 40px;
+      background: linear-gradient(145deg, #1c1f22, #101214);
+      color: #c5cbd1;
+      border: 1px solid #2f3338;
+      cursor: pointer;
+      box-shadow: 0 0 18px rgba(90, 110, 130, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(120, 150, 180, 0.4);
+      background: linear-gradient(145deg, #101215, #23272a);
+      color: #e0e4ea;
+    }
+
+    #loading {
+      display: none;
+      font-size: 20px;
+      color: #b2bac2;
+      animation: slowFade 2s infinite alternate;
+      margin-top: 20px;
+    }
+
+    @keyframes slowFade {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+
+    /* Falling hearts (sad) */
+    .heart {
+      position: fixed;
+      color: #7a889c;
+      font-size: 100px;
+      opacity: 0.6;
+      animation: heartRain 6s linear infinite;
+      z-index: 3;
+    }
+
+    @keyframes heartRain {
+      0% { transform: translateY(-10px) scale(0.8) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(100vh) scale(1.2) rotate(360deg); opacity: 0; }
+    }
+
+    /* Fullscreen video - no brightness filter */
+    #loveVideo {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 3s ease;
+      pointer-events: none;
+    }
+
+    /* Slight soft overlay to keep sad tone (transparent only) */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(30, 40, 60, 0.15);
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 3s ease;
+      pointer-events: none;
+    }
+
+    /* Light mist effect */
+    #mist {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,255,255,0.02), transparent 70%);
+      opacity: 0.1;
+      animation: mistMove 10s linear infinite;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    @keyframes mistMove {
+      from { transform: translateY(0); }
+      to { transform: translateY(10px); }
+    }
+  </style>
+
+  <script>
+    function goToLoveVideo() {
+      const btn = document.getElementById("loveBtn");
+      const loading = document.getElementById("loading");
+      const music = document.getElementById("bgMusic");
+      const video = document.getElementById("loveVideo");
+      const overlay = document.getElementById("overlay");
+
+      btn.style.display = "none";
+      loading.style.display = "block";
+
+      // play music
+      music.play();
+
+      // falling sad hearts
+      const heartInterval = setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = ".";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = 5 + Math.random() * 3 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+      }, 500);
+
+      video.setAttribute("autoplay", "");
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      video.removeAttribute("controls");
+
+      // fade transition
+      setTimeout(() => {
+        clearInterval(heartInterval);
+        loading.style.display = "none";
+
+        video.style.display = "block";
+        overlay.style.display = "block";
+
+        setTimeout(() => {
+          video.style.opacity = 1; // full brightness
+          overlay.style.opacity = 1;
+          video.play().catch(() => {});
+        }, 400);
+      }, 9000);
+    }
+  </script>
+</head>
+
+<body>
+  <div id="main">
+    <h1>You fade like a dream I can't wake from </h1>
+    <button id="loveBtn" onclick="goToLoveVideo()"> Click to remember </button>
+    <p id="loading">Memories loading...</p>
+  </div>
+
+  <!-- Original music link (unchanged) -->
+  <audio id="bgMusic" src="2.mp4"></audio>
+
+  <!-- Original video link (unchanged) -->
+  <video 
+    id="loveVideo" 
+    src="1.mp4"
+    autoplay 
+    muted 
+    playsinline>
+  </video>
+
+  <div id="overlay"></div>
+  <div id="mist"></div>
+</body>
+  </html>

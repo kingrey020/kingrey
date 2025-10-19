@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Click</title>
   <style>
     * {
@@ -9,27 +10,28 @@
     }
 
     body {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  font-family: "Poppins", sans-serif;
-  background: radial-gradient(circle at top, #3a3a3a, #1c1c1c, #000000 90%);
-  height: 100vh;
-  overflow: hidden;
-  transition: background-color 2s ease, opacity 2s ease;
-}
-
-
-
-
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at top, #3a3a3a, #1c1c1c, #000000 90%);
+      height: 100vh;
+      overflow: hidden;
+      transition: background-color 2s ease, opacity 2s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
     h1 {
-      font-size: 1.5em;
+      font-size: 1.6rem;
       color: #aeb6c2;
       text-shadow: 0 0 12px rgba(180, 200, 230, 0.4);
-      margin-top: 140px;
       letter-spacing: 1px;
       animation: fadeText 4s ease-in-out infinite alternate;
+      margin: 2rem 1rem;
+      max-width: 90%;
     }
 
     @keyframes fadeText {
@@ -38,8 +40,8 @@
     }
 
     button {
-      padding: 15px 45px;
-      font-size: 18px;
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
       border-radius: 40px;
       background: linear-gradient(145deg, #1c1f22, #101214);
       color: #c5cbd1;
@@ -47,6 +49,7 @@
       cursor: pointer;
       box-shadow: 0 0 18px rgba(90, 110, 130, 0.3);
       transition: all 0.4s ease;
+      margin-bottom: 1rem;
     }
 
     button:hover {
@@ -58,10 +61,10 @@
 
     #loading {
       display: none;
-      font-size: 20px;
+      font-size: 1rem;
       color: #b2bac2;
       animation: slowFade 2s infinite alternate;
-      margin-top: 20px;
+      margin-top: 0.8rem;
     }
 
     @keyframes slowFade {
@@ -69,14 +72,15 @@
       to { opacity: 1; }
     }
 
-    /* Falling hearts (sad) */
+    /* Falling hearts */
     .heart {
       position: fixed;
       color: #7a889c;
-      font-size: 100px;
+      font-size: 2rem;
       opacity: 0.6;
       animation: heartRain 6s linear infinite;
       z-index: 3;
+      pointer-events: none;
     }
 
     @keyframes heartRain {
@@ -84,7 +88,6 @@
       100% { transform: translateY(100vh) scale(1.2) rotate(360deg); opacity: 0; }
     }
 
-    /* Fullscreen video - no brightness filter */
     #loveVideo {
       display: none;
       position: fixed;
@@ -99,7 +102,6 @@
       pointer-events: none;
     }
 
-    /* Slight soft overlay to keep sad tone (transparent only) */
     #overlay {
       display: none;
       position: fixed;
@@ -114,7 +116,6 @@
       pointer-events: none;
     }
 
-    /* Light mist effect */
     #mist {
       position: fixed;
       top: 0;
@@ -132,6 +133,39 @@
       from { transform: translateY(0); }
       to { transform: translateY(10px); }
     }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.3rem;
+        margin-top: 1rem;
+      }
+
+      button {
+        padding: 0.9rem 2rem;
+        font-size: 0.95rem;
+      }
+
+      .heart {
+        font-size: 1.6rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.1rem;
+      }
+
+      button {
+        width: 80%;
+        font-size: 0.9rem;
+      }
+
+      #loading {
+        font-size: 0.9rem;
+      }
+    }
+
   </style>
 
   <script>
@@ -148,7 +182,7 @@
       // play music
       music.play();
 
-      // falling sad hearts
+      // falling hearts
       const heartInterval = setInterval(() => {
         const heart = document.createElement("div");
         heart.classList.add("heart");
@@ -164,16 +198,14 @@
       video.setAttribute("playsinline", "");
       video.removeAttribute("controls");
 
-      // fade transition
       setTimeout(() => {
         clearInterval(heartInterval);
         loading.style.display = "none";
-
         video.style.display = "block";
         overlay.style.display = "block";
 
         setTimeout(() => {
-          video.style.opacity = 1; // full brightness
+          video.style.opacity = 1;
           overlay.style.opacity = 1;
           video.play().catch(() => {});
         }, 400);
@@ -184,24 +216,15 @@
 
 <body>
   <div id="main">
-    <h1>You fade like a dream I can't wake from </h1>
-    <button id="loveBtn" onclick="goToLoveVideo()"> Click to remember </button>
+    <h1>You fade like a dream I can't wake from</h1>
+    <button id="loveBtn" onclick="goToLoveVideo()">Click to remember</button>
     <p id="loading">Memories loading...</p>
   </div>
 
-  <!-- Original music link (unchanged) -->
   <audio id="bgMusic" src="2.mp4"></audio>
-
-  <!-- Original video link (unchanged) -->
-  <video 
-    id="loveVideo" 
-    src="1.mp4"
-    autoplay 
-    muted 
-    playsinline>
-  </video>
-
+  <video id="loveVideo" src="1.mp4" autoplay muted playsinline></video>
   <div id="overlay"></div>
   <div id="mist"></div>
 </body>
   </html>
+  

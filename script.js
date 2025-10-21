@@ -10,7 +10,7 @@ const PROJECTS = [
   {
     title: "Portfolio Website",
     desc: "My personal responsive portfolio built using vanilla JS and CSS grid.",
-    imgs: ["https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80"]
+    imgs: ["kingg.png"]
   }
 ];
 
@@ -99,3 +99,4 @@ if(contactForm){
     setTimeout(()=> formMsg.textContent = 'Thank you — your message was sent (Formspree).', 1200);
   });
 }
+
